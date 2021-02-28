@@ -28,7 +28,7 @@ describe('TodosHook', () => {
     expect(facade).toBeTruthy();
   });
 
-  it('should emit updated todos after addTodo()', async () => {
+  it('should emit updated todos after addTodo()', () => {
     const { result } = renderHook(useTodosHook);
     const filter = (): VISIBILITY_FILTER => result.current[0] as VISIBILITY_FILTER;
     const todos = (): Todo[] => result.current[1];
