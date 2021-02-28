@@ -15,13 +15,13 @@ export interface TodosState extends EntityState<Todo> {
 export class TodosStore extends EntityStore<TodosState, Todo> {
   constructor() {
     super({
-      filter: VISIBILITY_FILTER.SHOW_ALL
+      filter: VISIBILITY_FILTER.SHOW_ALL,
     });
   }
 }
 
 export class TodosQuery extends QueryEntity<TodosState, Todo> {
-  filter$ = this.select(state => state.filter);
+  filter$ = this.select((state) => state.filter);
   todos$ = combineLatest([this.filter$, this.selectAll()]).pipe(map(gatherVisibleTodos));
 
   constructor(protected store: TodosStore) {
@@ -32,8 +32,8 @@ export class TodosQuery extends QueryEntity<TodosState, Todo> {
 function gatherVisibleTodos([filter, todos]): Todo[] {
   const withFilter = switchCase(
     {
-      [VISIBILITY_FILTER.SHOW_ACTIVE]: () => todos.filter(t => !t.completed),
-      [VISIBILITY_FILTER.SHOW_COMPLETED]: () => todos.filter(t => t.completed)
+      [VISIBILITY_FILTER.SHOW_ACTIVE]: () => todos.filter((t) => !t.completed),
+      [VISIBILITY_FILTER.SHOW_COMPLETED]: () => todos.filter((t) => t.completed),
     },
     todos || []
   );
@@ -43,3 +43,10 @@ function gatherVisibleTodos([filter, todos]): Todo[] {
 
 export const todosStore = new TodosStore();
 export const todosQuery = new TodosQuery(todosStore);
+
+export const makeStore = (): [TodosStore, TodosQuery] => {
+  const store = new TodosStore();
+  const query = new TodosQuery(store);
+
+  return [store, query];
+};
