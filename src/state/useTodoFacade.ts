@@ -5,7 +5,7 @@ import { VISIBILITY_FILTER as v, Todo } from './todo.model';
 
 export type TodoHookTuple = [string, Todo[], TodosFacade];
 
-export function useTodosHook(): TodoHookTuple {
+export function useTodosFacade(): TodoHookTuple {
   const [facade] = useState(() => makeFacade());
   const [filter] = useObservable(facade.filter$, v.SHOW_ALL);
   const [todos] = useObservable(facade.todos$, []);

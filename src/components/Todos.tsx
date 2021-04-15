@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { CSSTransition, TransitionGroup } from 'react-transition-group';
-import { useTransition, animated } from "react-spring";
+import { useTransition, animated } from 'react-spring';
 
 import { IonItem, IonButton, IonLabel, IonIcon, IonContent } from '@ionic/react';
 import { trash } from 'ionicons/icons';
@@ -25,7 +25,13 @@ export const TodoItem: React.FC<TodoItemProps> = ({ todo, toggleComplete, delete
         {todo.text}
       </IonLabel>
       <IonButton fill="clear" onClick={() => deleteTodo(todo)}>
-        <IonIcon icon={trash.md} color="warning" size="large" slot="start" style={{ '--ion-color-warning': '#843939' }} />
+        <IonIcon
+          icon={trash.md}
+          color="warning"
+          size="large"
+          slot="start"
+          style={{ '--ion-color-warning': '#843939' }}
+        />
       </IonButton>
       <IonButton onClick={() => toggleComplete(todo)}>Toggle Status</IonButton>
       <IonButton onClick={() => (todo.completed = true)} color="danger">
@@ -44,7 +50,7 @@ export const TodoList_Orig: React.FC<TodoListProps> = ({ todos, onToggle, onDele
     <IonContent className="content">
       <ul>
         <TransitionGroup className="todos">
-          {todos.map(todo => (
+          {todos.map((todo) => (
             <CSSTransition key={todo.id} timeout={300} classNames="todo" in={true}>
               <TodoItem key={todo.id} todo={todo} toggleComplete={onToggle} deleteTodo={onDelete} />
             </CSSTransition>
@@ -59,20 +65,20 @@ export const TodoList_Orig: React.FC<TodoListProps> = ({ todos, onToggle, onDele
  * Animation using React-Spring and `useTransition()` hook
  */
 export const TodoList: React.FC<TodoListProps> = ({ todos, onToggle, onDelete }) => {
-  const transitions = useTransition(todos, item => item.id, {
-    from:  {opacity: 0},
-    enter: {opacity: 1},
-    leave: {opacity: 0},
-    config: { duration: 300 }
-  }, );
+  const transitions = useTransition(todos, (item) => item.id, {
+    from: { opacity: 0 },
+    enter: { opacity: 1 },
+    leave: { opacity: 0 },
+    config: { duration: 300 },
+  });
   return (
     <IonContent className="content">
       <ul>
-          {transitions.map(({item: todo, props, key}) => (
-            <animated.div style={props} key={key}>
-              <TodoItem todo={todo} toggleComplete={onToggle} deleteTodo={onDelete} />
-            </animated.div>              
-          ))}
+        {transitions.map(({ item: todo, props, key }) => (
+          <animated.div style={props} key={key}>
+            <TodoItem todo={todo} toggleComplete={onToggle} deleteTodo={onDelete} />
+          </animated.div>
+        ))}
       </ul>
     </IonContent>
   );

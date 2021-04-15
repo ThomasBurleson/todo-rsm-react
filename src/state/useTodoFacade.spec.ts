@@ -1,16 +1,16 @@
 import { renderHook, act } from '@testing-library/react-hooks';
 
-import { VISIBILITY_FILTER, Todo } from './todo.model';
 import { TodosFacade } from './todos.facade';
-import { useTodosHook } from './todos.hook';
+import { useTodosFacade } from './useTodoFacade';
+import { VISIBILITY_FILTER, Todo } from './todo.model';
 
 /**
- * Testing `useTodosHook()`
+ * Testing `useTodosFacade()`
  *
  * Because the TodosFacade can be used with this hook for many different UI components, let's
  * write tests for the hook itself.
  *
- * Since `useTodosHook()` does accept any options, the `renderHook()` call will not need for options
+ * Since `useTodosFacade()` does accept any options, the `renderHook()` call will not need for options
  * nor will we use `waitFor()` or `rerender()`. Why? Because our hook will re-emit AFTER the `facade` public methods
  * are called.
  *
@@ -20,7 +20,7 @@ import { useTodosHook } from './todos.hook';
 
 describe('TodosHook', () => {
   it('should publish initial values', () => {
-    const { result } = renderHook(useTodosHook);
+    const { result } = renderHook(useTodosFacade);
     const [filter, todos, facade] = result.current;
 
     expect(filter).toEqual(VISIBILITY_FILTER.SHOW_ALL);
@@ -29,7 +29,7 @@ describe('TodosHook', () => {
   });
 
   it('should emit updated todos after addTodo()', () => {
-    const { result } = renderHook(useTodosHook);
+    const { result } = renderHook(useTodosFacade);
     const filter = (): VISIBILITY_FILTER => result.current[0] as VISIBILITY_FILTER;
     const todos = (): Todo[] => result.current[1];
     const facade = (): TodosFacade => result.current[2];
@@ -47,7 +47,7 @@ describe('TodosHook', () => {
   });
 
   it('should emit updated todos after deleteTodo()', () => {
-    const { result } = renderHook(useTodosHook);
+    const { result } = renderHook(useTodosFacade);
     const todos = (): Todo[] => result.current[1];
     const facade = (): TodosFacade => result.current[2];
 
@@ -67,7 +67,7 @@ describe('TodosHook', () => {
   });
 
   it('should emit updated todos after updateFilter()', () => {
-    const { result } = renderHook(useTodosHook);
+    const { result } = renderHook(useTodosFacade);
     const todos = (): Todo[] => result.current[1];
     const facade = (): TodosFacade => result.current[2];
 
@@ -89,7 +89,7 @@ describe('TodosHook', () => {
   });
 
   it('should emit updated filter after updateFilter()', () => {
-    const { result } = renderHook(useTodosHook);
+    const { result } = renderHook(useTodosFacade);
     const filter = () => result.current[0];
     const facade = (): TodosFacade => result.current[2];
 
